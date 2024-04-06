@@ -14,7 +14,6 @@ import java.util.*;
  *
  * @author Onur Onal
  * @author Kemal Yavuz
- *
  */
 @RestController
 public class CardController {
@@ -119,24 +118,45 @@ public class CardController {
     public ResponseEntity<?> createCard(@PathVariable UUID id, @RequestBody Card card) {
         return userRepository.findById(id)
                 .map(user -> {
-                    card.setIsDefault(true);
-                    List<Card> userCards = user.getCards();
-
-                    for (Card c : userCards) {
-                        if (c.getIsDefault() == true) {
-                            c.setIsDefault(false);
-                            cardRepository.save(c);
-                            break;
-                        }
-                    }
-
+                    card.setExpirationDate("12/25");
                     card.setUser(user);
+                    card.setIsDefault(true);
                     cardRepository.save(card);
                     user.addCard(card);
                     userRepository.save(user);
                     // Wrap the UUID in a JSON object
                     return ResponseEntity.ok(Map.of("id", card.getId()));
 
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Sets a new default card for a user.
+     *
+     * @param userId The UUID of the user.
+     * @param cardId The UUID of the card.
+     * @return The new default card.
+     */
+    @PostMapping("/cards/id/{userId}/{cardId}")
+    public ResponseEntity<Card> setDefaultCard(@PathVariable UUID userId, @PathVariable UUID cardId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    List<Card> userCards = user.getCards();
+                    Card card = null;
+
+                    for (Card c : userCards) {
+                        if (c.getId().equals(cardId)) {
+                            c.setIsDefault(true);
+                            card = c;
+                            cardRepository.save(c);
+                        } else if (c.getIsDefault() == true) {
+                            c.setIsDefault(false);
+                            cardRepository.save(c);
+                        }
+                    }
+
+                    return ResponseEntity.ok(card);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -186,7 +206,7 @@ public class CardController {
      *
      * @param userId The UUID of the user.
      * @param cardId The UUID of the card.
-     * @return  success message
+     * @return success message
      */
     @DeleteMapping("/cards/id/{userId}/{cardId}")
     @Transactional
@@ -208,8 +228,7 @@ public class CardController {
                             user.getCards().iterator().next().setIsDefault(true);
                         }
                         return ResponseEntity.ok("Card deleted successfully");
-                    }
-                    else {
+                    } else {
                         return ResponseEntity.notFound().build();
                     }
                 })
