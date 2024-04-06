@@ -1,7 +1,9 @@
 package ta4_1.MoneyFlow_Backend.Cards;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import ta4_1.MoneyFlow_Backend.Family.Family;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
 import java.util.UUID;
