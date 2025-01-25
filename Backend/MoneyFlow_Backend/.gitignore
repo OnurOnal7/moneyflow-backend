@@ -1,6 +1,5 @@
 HELP.md
 
-
 ### STS ###
 .apt_generated
 .classpath
@@ -28,3 +27,42 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Maven-specific ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+### macOS ###
+.DS_Store
+
+### Log files ###
+*.log
+
+### Compiled class files ###
+*.class
+
+### Test Coverage Reports ###
+jacoco.exec
+*.exec
+*.coverage
+*.lcov
+
+### Generated Sources ###
+generated-sources/
+generated-test-sources/
+
+### Generated Logs and Reports ###
+surefire-reports/
+maven-status/
+site/
+
+### Temporary Files ###
+*.swp
+*~

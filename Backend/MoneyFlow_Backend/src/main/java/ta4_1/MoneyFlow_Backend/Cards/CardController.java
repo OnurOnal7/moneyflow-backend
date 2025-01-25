@@ -126,7 +126,7 @@ public class CardController {
         List<Card> userCards = user.getCards();
 
         for (Card c : userCards) {
-            if (c.getIsDefault()) {
+            if (c.isDefault()) {
                 return ResponseEntity.ok(c);
             }
         }
@@ -172,11 +172,11 @@ public class CardController {
 
                     for (Card c : userCards) {
                         if (c.getId().equals(cardId)) {
-                            c.setIsDefault(true);
+                            c.setDefault(true);
                             card = c;
                             cardRepository.save(c);
-                        } else if (c.getIsDefault() == true) {
-                            c.setIsDefault(false);
+                        } else if (c.isDefault()) {
+                            c.setDefault(false);
                             cardRepository.save(c);
                         }
                     }
@@ -252,8 +252,8 @@ public class CardController {
                     }
                     if (isCardDeleted) {
                         user.getCards().remove(deletedCard);
-                        if ((deletedCard.getIsDefault()) && (!user.getCards().isEmpty())) {
-                            user.getCards().iterator().next().setIsDefault(true);
+                        if ((deletedCard.isDefault()) && (!user.getCards().isEmpty())) {
+                            user.getCards().iterator().next().setDefault(true);
                         }
                         return ResponseEntity.ok("Card deleted successfully");
                     } else {

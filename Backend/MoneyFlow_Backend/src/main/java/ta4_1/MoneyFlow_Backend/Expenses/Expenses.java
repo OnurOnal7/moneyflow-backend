@@ -2,6 +2,7 @@ package ta4_1.MoneyFlow_Backend.Expenses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
 import java.util.UUID;
@@ -14,21 +15,29 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "expenses")
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class Expenses {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;    // Unique identifier for the expenses.
 
     @Column(name = "personal")
+    @NonNull
     private double personal;    // Personal expenses.
 
     @Column(name = "work")
+    @NonNull
     private double work;    // Work-related expenses.
 
     @Column(name = "home")
+    @NonNull
     private double home;    // Home expenses.
 
     @Column(name = "other")
+    @NonNull
     private double other;   // Other expenses.
 
     @JsonIgnore
@@ -37,44 +46,10 @@ public class Expenses {
     @JoinColumn(name = "user_id")
     private User user;  // The user associated with these expenses.
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Expenses() {
-    }
-
-    public Expenses(double personal, double work, double home, double other) {
-        this.personal = personal;
-        this.work = work;
-        this.home = home;
-        this.other = other;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public double getPersonal() {
-        return personal;
-    }
-
     public void setPersonal(double personal) {
         if (personal >= 0) {
             this.personal = personal;
         }
-    }
-
-    public double getWork() {
-        return work;
     }
 
     public void setWork(double work) {
@@ -83,18 +58,10 @@ public class Expenses {
         }
     }
 
-    public double getHome() {
-        return home;
-    }
-
     public void setHome(double home) {
         if (home >= 0) {
             this.home = home;
         }
-    }
-
-    public double getOther() {
-        return other;
     }
 
     public void setOther(double other) {
